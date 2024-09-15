@@ -1,0 +1,11 @@
+beautifulsoup4==4.12.3
+html2text==2024.2.26
+langchain_text_splitters==0.2.4
+llmlingua==0.2.2
+openai==1.45.0
+pandas==2.2.2
+rank_bm25==0.2.2
+Requests==2.32.3
+spacy==3.8.0
+tiktoken==0.7.0
+transformers==4.45.0.dev0
