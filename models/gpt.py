@@ -9,8 +9,8 @@ from concurrent.futures import ThreadPoolExecutor
 result = {}
 error_count = {}
 threadLock = _thread.allocate_lock()
-
-
+OPENAI_API_KEY = "sk-Ei2IrBHLiFEhgFsCA4071aE63c254465A3Cf0230Cf3c8a9d"
+OPENAI_BASE_URL = "https://one.aios123.com/v1/"
 def _do_fun(fn, id, arg):
     global result
     try:

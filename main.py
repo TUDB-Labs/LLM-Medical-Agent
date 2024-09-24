@@ -5,6 +5,7 @@ import html2text
 import json
 import os
 from utils.log import CustomLogger
+from utils.get_abstract_exist import get_abstract_exist
 from datetime import datetime
 from agents.study import Study
 import ipdb
@@ -13,7 +14,7 @@ from llmlingua import PromptCompressor
 current_time = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 # 创建日志文件名
 log_filename = f"log_{current_time}.log"
-logger = CustomLogger("/root/medical/makedata2/log/"+log_filename)
+logger = CustomLogger("/LLM-Medical-Agent/log/"+log_filename)
 compressor = PromptCompressor(
 model_name="microsoft/llmlingua-2-xlm-roberta-large-meetingbank",
 use_llmlingua2=True
@@ -31,35 +32,40 @@ with open("/LLM-Medical-Agent/data/pmid_with_name.jsonl","r",encoding="utf-8") a
         for i in range(len(json_obj["英文通用名"])):
             name =name + json_obj["英文通用名"][i]+"_"
         name = name[:-1] 
-        save_path = os.path.join("/root/medical/makedata2/data/answer_100",name,json_obj["pmid"] + ".json") 
+        pmid = json_obj["pmid"]
+        save_path = os.path.join("/LLM-Medical-Agent/data/answer_100(4)",name,pmid + ".json") 
         if os.path.exists(save_path):
-            continue
-        study_data = Study(json_obj["pmid"],name,compressor) 
+            with open(save_path, "r", encoding="utf-8") as file:
+                data = json.load(file)
+                if data["question_list"]["process_pediatrics_incontent"] == False:
+                    continue
+        study_data = Study(pmid,name,compressor) 
 
         # 尝试获取摘要
-        if study_data.fetch_abstract():
+        abstract = get_abstract_exist(name,pmid)
+        if study_data.fetch_abstract(abstract):
             # 流程控制
             result = study_data.process_pediatrics_inabstract()
-            logger.log_info(f"{name} process_pediatrics_inabstract: {result}")
+            logger.log_info(f"{name}_{pmid} process_pediatrics_inabstract: {result}")
             study_data.data["question_list"]["process_pediatrics_inabstract"] = True
-            if result["short_answer"] == "yes":
+            if result["short_answer"].lower() == "included":
                 study_data.data["includes_pediatrics"] = True
                 result = study_data.process_effectiveness()
-                logger.log_info(f"{name} process_effectiveness: {result}")
+                logger.log_info(f"{name}_{pmid} process_effectiveness: {result}")
                 study_data.data["question_list"]["process_effectiveness"] = True
-                if result["short_answer"] == "yes":
+                if result["short_answer"].lower() == "yes":
                     study_data.data["proves_effective"] = True
                     # continue to ask question remain
                     study_data.ask_remain_question()
                     
-            elif result["short_answer"] == "age_not_mentioned":
+            elif result["short_answer"].lower() == "age_not_mentioned":
                 result = study_data.process_pediatrics_incontent()   
-                logger.log_info(f"{name} process_pediatrics_incontent: {result}")
+                logger.log_info(f"{name}_{pmid} process_pediatrics_incontent: {result}")
                 study_data.data["question_list"]["process_pediatrics_incontent"] = True
                 if result["short_answer"] == "yes": 
                     study_data.data["includes_pediatrics"] = True
                     result = study_data.process_population_effectiveness()
-                    logger.log_info(f"{name} process_population_effectiveness: {result}")
+                    logger.log_info(f"{name}_{pmid} process_population_effectiveness: {result}")
                     study_data.data["question_list"]["process_population_effectiveness"] = True
                     if result["short_answer"] =="yes":
                         study_data.data["proves_effective"] = True

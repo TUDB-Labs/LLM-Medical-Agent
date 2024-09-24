@@ -3,7 +3,7 @@ import json
 import pandas as pd
 
 # 定义 JSON 文件所在的目录
-directory = "/root/medical/makedata2/data/answer_100"
+directory = "/LLM-Medical-Agent/data/answer_100(4)"
 
 # 初始化一个空的列表来存储数据
 data = []
@@ -44,7 +44,7 @@ for root, dirs, files in os.walk(directory):
 df = pd.DataFrame(data)
 
 # 将 DataFrame 保存为 CSV 文件
-csv_file_path = "/root/medical/makedata2/data/output.csv"
+csv_file_path = "/LLM-Medical-Agent/data/output6.csv"
 df.to_csv(csv_file_path, index=False)
 
 print(f"CSV 文件已保存到 {csv_file_path}")

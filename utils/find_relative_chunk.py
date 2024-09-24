@@ -13,6 +13,14 @@ logging.basicConfig(filename="relativechunk.log",  # 将日志保存到filename�
 
 #only llm,return relative chunk
 def find_relative_chunk(paper_name, question, prompt = "Given the question and the document below, does the document provide information that would be useful in answering the question? Please respond with either 'Yes' or 'No' only."):
+    """
+    输入：{
+        "abstract":...
+          "content":...   
+          }
+    
+    """
+
     try:
         with open(paper_name, 'r', encoding='utf-8') as f:  
             relative_chunk = {}
