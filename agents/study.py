@@ -143,11 +143,89 @@ class Study:
         return json_object
 
     def ask_remain_question(self):
+        self.data["age"] = self.age()
+        self.data["disease"] = self.target_disease()
+        self.data["icd10"] = self.icd10_of_target_disease()
+        self.data["drug_intervention"] = self.drug_intervention()
+        self.data["study_type"] = self.study_type()
         self.data["question_list"]["remain_problem"] = True
 
+    def age(self):
+        prompt = ""
+        question = ""
+        related_chunk = related_chunk(qeustion)
+        prompt = prompt.format()
+        prompt_dict = {}
+        prompt_dict["prompt"] = prompt
+        result = gpt_request_from_relative_chunk(prompt_dict)
+        try:
+            json_object = json.loads(result)
+        except json.JSONDecodeError as e:
+            logging.error(f"Error parsing JSON: {e}")
+            return None
+        return json_object
 
 
+    def target_disease(self):
+        prompt = ""
+        question = ""
+        related_chunk = related_chunk(qeustion)
+        prompt = prompt.format()
+        prompt_dict = {}
+        prompt_dict["prompt"] = prompt
+        result = gpt_request_from_relative_chunk(prompt_dict)
+        try:
+            json_object = json.loads(result)
+        except json.JSONDecodeError as e:
+            logging.error(f"Error parsing JSON: {e}")
+            return None
+        return json_object
 
+    def icd10_of_target_disease(self):
+        if slef.data["disease"] == False:
+            self.data["disease"] = self.target_disease()
+            disease =  self.data["disease"]
+        else:
+            disease =  self.data["disease"]
+        icd10 = get_request_data_icd10(disease)
+        return icd10
+
+    def drug_intervention(self):
+        prompt = ""
+        question = ""
+        related_chunk = related_chunk(qeustion)
+        prompt = prompt.format()
+        prompt_dict = {}
+        prompt_dict["prompt"] = prompt
+        result = gpt_request_from_relative_chunk(prompt_dict)
+        try:
+            json_object = json.loads(result)
+        except json.JSONDecodeError as e:
+            logging.error(f"Error parsing JSON: {e}")
+            return None
+        return json_object
+
+    def study_type(self):
+        prompt = ""
+        question = ""
+        related_chunk = related_chunk(qeustion)
+        prompt = prompt.format()
+        prompt_dict = {}
+        prompt_dict["prompt"] = prompt
+        result = gpt_request_from_relative_chunk(prompt_dict)
+        try:
+            json_object = json.loads(result)
+        except json.JSONDecodeError as e:
+            logging.error(f"Error parsing JSON: {e}")
+            return None
+        return json_object
+
+    def related_chunk(self,question):
+        if self.data.content = False:
+            pass
+        else:
+
+        
 
     def gather_details(self):
         return self.data
