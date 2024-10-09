@@ -4,8 +4,7 @@ from langchain_community.document_loaders import TextLoader
 from langchain_community.vectorstores import FAISS
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import CharacterTextSplitter
-OPENAI_API_KEY = "sk-2cmthChvoTpVLsZzAe5bE435A67741FcB220E8788dA367A3"
-OPENAI_BASE_URL = "https://one.aios123.com/v1/"
+
 documents = TextLoader("/Users/cqs/Documents/研究生学习/代码/LLM-Medical-Agent/data/1103749.json").load()
 def pretty_print_docs(docs):
     print(

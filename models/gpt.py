@@ -10,8 +10,6 @@ result = {}
 error_count = {}
 threadLock = _thread.allocate_lock()
 
-OPENAI_API_KEY = "sk-2cmthChvoTpVLsZzAe5bE435A67741FcB220E8788dA367A3"
-OPENAI_BASE_URL = "https://one.aios123.com/v1/"
 def _do_fun(fn, id, arg):
     global result
     try:
