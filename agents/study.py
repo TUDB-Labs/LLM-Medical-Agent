@@ -52,39 +52,6 @@ class Study:
             "study_type":""
         }
         }
-        # self.paper_info = {
-        #     "abstract": "",
-        #     "conten":"",
-        #     "includes_pediatrics": False,
-        #     "proves_effective": False,
-        #     "age": "",
-        #     "disease": "",
-        #     "icd10":"",
-        #     "drug_route": "",
-        #     "study_type": ""    
-        # }
-        # self.state ={
-        #     "need_to_fetch_conent": False,
-        #     "include_abstract": False,
-        #     "include_content": False,
-        #     "process_pediatrics_inabstract": False,
-        #     "process_effectiveness": False,
-        #     "process_pediatrics_incontent": False,
-        #     "process_population_effectiveness": False,
-        #     "remain_problem": False
-        # }
-        # self.answer ={
-        #     "process_pediatrics_inabstract":"",
-        #     "process_effectiveness":"",
-        #     "process_pediatrics_incontent":"",
-        #     "process_population_effectiveness":"",
-        #     "age":"",
-        #     "target_disease":"",
-        #     "icd10_of_target_disease":"",
-        #     "drug_intervention":"",
-        #     "study_type":""
-        # }
-
 
 
     def fetch_abstract(self,abstract=None):
@@ -101,7 +68,7 @@ class Study:
                 if abstract_div is not None:
                     html_abstract = abstract_div.get_text()
                 else:
-                    logging.error(f"drug name:{self.data["base_info"]["drug_name"]}'s paper{self.data["base_info"]["abstract_url"]} not have abstract")
+                    logging.error(f"drug name:{self.data['base_info']['drug_nmae']}'s paper{self.data['base_info']['abstract_url']} not have abstract")
                     return False
                 markdown = html2text.html2text(html_abstract)  
                 self.data["paper_info"]["abstract"] = markdown
@@ -179,7 +146,7 @@ class Study:
             all_token =  all_token + len(enc.encode(value) )
             if all_token >5000:
                 continue
-        contents = '\n'.join(content)
+        contents = '\n'.join(content) 
         # import ipdb
         # ipdb.set_trace()
         # if all_token >5000:
